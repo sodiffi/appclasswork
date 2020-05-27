@@ -21,12 +21,13 @@ import java.util.Random;
 
 public class AbActivity extends AppCompatActivity {
 
-    Button button,back;
+    Button button, back;
     TextView editText;
     private LinearLayout.LayoutParams params;
     RecyclerView recyclerView;
     Toast toast;
-    List<String> resultSet=new ArrayList<>();
+    private Long startTime, endTime;
+    List<String> resultSet = new ArrayList<>();
     int a, b, guess;// 宣告要使用的變數,a->儲存判斷位置相同的數字是否相同,b->儲存相同的數字是否存在但位置不同,
     // guess ->儲存玩家輸入的值
     boolean checkRepeating;// 宣告布林值幫助判斷數值是否重複
@@ -38,11 +39,11 @@ public class AbActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ab);
-        back=findViewById(R.id.back);
+        back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(AbActivity.this,MainActivity.class);
+                Intent intent = new Intent(AbActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,7 +61,11 @@ public class AbActivity extends AppCompatActivity {
             }
             if (!checkRepeating) {//如果沒有重複
                 pswArray.add(temp);//將先前取的亂數放入pswArray清單中
+
             }
+        }
+        for (int ii : pswArray) {
+            System.out.println(ii);
         }
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
         params.setMargins(0, 1, 0, 1);
@@ -76,7 +81,7 @@ public class AbActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     guess = Integer.parseInt(editText.getText().toString());// 取得使用者輸入的值(先假設使用者知道且願意輸入正確數值)
                     guessArray[0] = guess % 10;// 透過運算取得guess的個位數字,放入guessArray陣列裡
                     guessArray[1] = (guess % 100) / 10;// 透過運算取得guess的十位數字,放入guessArray陣列裡
@@ -112,21 +117,26 @@ public class AbActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        if(a!=4){
-                            addTextView(String.format("%04d ==> %dA %dB",guess,a,b));}
-                        else{addTextView("You win");}
-                    }else{
+                        if (a != 4) {
+                            addTextView(String.format("%04d ==> %dA %dB", guess, a, b));
+                        } else {
+                            addTextView("You win");
+                            endTime = System.currentTimeMillis();
+                            addTextView(String.valueOf((endTime - startTime)/1000));
+                        }
+                    } else {
                         toastHelper("please enter fore no repeating number");
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                    if(e instanceof NumberFormatException){
+                    if (e instanceof NumberFormatException) {
                         toastHelper("please enter fore number");
                     }
                 }
                 editText.setText("");
             }
         });
+        startTime = System.currentTimeMillis();
     }
 
     public void addTextView(String result) {

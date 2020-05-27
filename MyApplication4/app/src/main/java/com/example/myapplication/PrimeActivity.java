@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
 public class PrimeActivity extends AppCompatActivity {
-    private TextView textView, textViewResult;
-
+    private TextView textView, textViewResult,textViewName;
+    private EditText editText;
+    Intent intent;
     private Button button, back;
 
 
@@ -20,9 +22,12 @@ public class PrimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prime);
+         intent=getIntent();
         textView = findViewById(R.id.editText);
         textViewResult = findViewById(R.id.textView);
         button = findViewById(R.id.button);
+        textViewName=findViewById(R.id.textView2);
+        textViewName.setText(intent.getStringExtra("name"));
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
